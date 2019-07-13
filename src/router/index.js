@@ -27,8 +27,19 @@ const router = new VueRouter({
   },
 
   // 其他路由位置
-  { name: 'oter', path: '*', component: other }
+  {
+    name: 'oter',
+    path: '*',
+    component: other
+  }
   ]
 })
 
+// 前置守卫
+router.beforeEach((to, from, next) => {
+  if (to.path === '/login') return next()
+  const user = window.sessionStorage.getItem('heima')
+  if (user) return next()
+  return next('/login')
+})
 export default (router)

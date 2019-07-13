@@ -57,12 +57,12 @@ export default {
         if (valid) {
           this.axios
             .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              'authorizations',
               this.form
             )
             .then(res => {
               console.log(res)
-
+              window.sessionStorage.setItem('heima', JSON.stringify(res.data.data))
               this.$router.push('/')
             })
             .catch(() => {
