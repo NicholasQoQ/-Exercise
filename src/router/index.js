@@ -6,6 +6,7 @@ import Login from '../views/login'
 import heard from '../views/heard'
 
 import home from '../views/home/home.vue'
+import article from '../views/article'
 
 import other from '../views/other/other.vue'
 
@@ -19,11 +20,10 @@ const router = new VueRouter({
   {
     path: '/',
     component: heard,
-    children: [{
-      name: 'home',
-      path: '/',
-      component: home
-    }]
+    children: [
+      { name: 'home', path: '/', component: home },
+      { name: 'article', path: '/article', component: article }
+    ]
   },
 
   // 其他路由位置

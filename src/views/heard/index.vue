@@ -8,7 +8,7 @@
           :collapse="!isCllapse"
           :collapse-transition="false"
           style="border-right:none"
-          default-active="/"
+          :default-active="$route.path"
           class="el-menu-vertical-demo"
           background-color="#002033"
           text-color="#fff"
@@ -18,27 +18,27 @@
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="article">
+          <el-menu-item index="/article">
             <i class="el-icon-setting"></i>
             <span slot="title">内容管理</span>
           </el-menu-item>
-          <el-menu-item index="image">
+          <el-menu-item index="/image">
             <i class="el-icon-setting"></i>
             <span slot="title">素材管理</span>
           </el-menu-item>
-          <el-menu-item index="publish">
+          <el-menu-item index="/publish">
             <i class="el-icon-setting"></i>
             <span slot="title">发布文章</span>
           </el-menu-item>
-          <el-menu-item index="comment">
+          <el-menu-item index="/comment">
             <i class="el-icon-setting"></i>
             <span slot="title">评论管理</span>
           </el-menu-item>
-          <el-menu-item index="fans">
+          <el-menu-item index="/fans">
             <i class="el-icon-setting"></i>
             <span slot="title">粉丝管理</span>
           </el-menu-item>
-          <el-menu-item index="setting">
+          <el-menu-item index="/setting">
             <i class="el-icon-setting"></i>
             <span slot="title">个人设置</span>
           </el-menu-item>
@@ -48,21 +48,22 @@
         <el-header class="header">
           <span class="el-icon-s-fold" @click="toggleMenu()"></span>
           <span class="txt-header">江苏传智播客科技教育有限公司</span>
-          <el-dropdown style="float: right">
-            <img
+          <el-dropdown style="float: right" trigger="click" >
+
+            <span class="el-dropdown-link" >
+              <img
               style="vertical-align:middle"
               width="30"
               height="30"
-              src="../../assets/images/avatar.jpg"
+              :src="MyHeader"
               alt
             />
-            <span class="el-dropdown-link">
-              <b style="vertical-align:middle;padding-left:5px">黑马小哥</b>
+              <b  style="vertical-align:middle;padding-left:5px" slot=dropdown>{{MyName}}</b>
               <i class="el-icon-arrow-down el-icon--right"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>个人设置</el-dropdown-item>
-              <el-dropdown-item>个人推出</el-dropdown-item>
+              <el-dropdown-item @click.native="MySet">个人设置</el-dropdown-item>
+              <el-dropdown-item @click.native="loginOut">个人推出</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </el-header>
@@ -78,12 +79,26 @@
 export default {
   data () {
     return {
-      isCllapse: true
+      isCllapse: true,
+      MyHeader: '',
+      MyName: ''
     }
+  },
+  created () {
+    const user = window.sessionStorage.getItem('heima')
+    this.MyName = JSON.parse(user).name
+    this.MyHeader = JSON.parse(user).photo
   },
   methods: {
     toggleMenu () {
       this.isCllapse = !this.isCllapse
+    },
+    MySet () {
+      this.$router.push('/setting')
+    },
+    loginOut () {
+      window.sessionStorage.removeItem('heima')
+      this.$router.push('/login')
     }
   }
 }
