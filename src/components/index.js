@@ -1,7 +1,9 @@
 import MyCrumbs from './MyCrumbs.vue'
+import MyChannel from './MyChannel.vue'
 
 export default {
   install (Vue) {
     Vue.component(MyCrumbs.name, MyCrumbs)
+    Vue.component(MyChannel.name, MyChannel)
   }
 }
