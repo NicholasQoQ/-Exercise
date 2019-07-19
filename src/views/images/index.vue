@@ -22,7 +22,7 @@
             :class="{red:item.is_collected}"
             @click="collectImage(item)"
           ></span>
-          <span class="el-icon-delete"></span>
+          <span class="el-icon-delete" @click="del(item.id)"></span>
         </div>
       </div>
       <!-- 分页 -->
@@ -88,6 +88,12 @@ export default {
     this.getIages()
   },
   methods: {
+    del (id) {
+      this.axios.delete(`/user/images/${id}`).then(res => {
+        console.log(res)
+        this.getIages()
+      })
+    },
     collectImage (item) {
       this.axios
         .put(`user/images/${item.id}`, { collect: !item.is_collected })

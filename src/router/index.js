@@ -8,6 +8,7 @@ import heard from '../views/heard'
 import home from '../views/home/home.vue'
 import article from '../views/article'
 import images from '../views/images'
+import publish from '../views/publish'
 
 import other from '../views/other/other.vue'
 
@@ -24,7 +25,8 @@ const router = new VueRouter({
     children: [
       { name: 'home', path: '/', component: home },
       { name: 'article', path: '/article', component: article },
-      { name: 'images', path: '/image', component: images }
+      { name: 'images', path: '/image', component: images },
+      { name: 'publish', path: '/publish', component: publish }
     ]
   },
 
