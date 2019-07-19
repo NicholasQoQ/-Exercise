@@ -25,7 +25,6 @@ export default {
     getChannel () {
       this.axios.get('channels').then(res => {
         this.options = res.data.data.channels
-        console.log(this.options)
       })
     }
   }

@@ -8,6 +8,9 @@ import router from './router'
 import components from '@/components/index.js'
 
 import axios from './axios'
+
+// 加载自定义样式
+import '@/style/index.less'
 Vue.prototype.axios = axios
 
 Vue.use(components)

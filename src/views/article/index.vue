@@ -4,7 +4,7 @@
       <my-crumbs>内容</my-crumbs>
       <el-form label-width="50px" :model="FormArticle" size="small">
         <el-form-item label="状态">
-          <el-radio-group v-model="FormArticle.channel_id">
+          <el-radio-group v-model="FormArticle.status" @change="status">
             <el-radio :label="null">全部</el-radio>
             <el-radio :label="0">草稿</el-radio>
             <el-radio :label="1">待审核</el-radio>
@@ -14,7 +14,7 @@
           </el-radio-group>
         </el-form-item>
         <el-form-item label="频道" size="small">
-          <my-channel v-model="FormArticle.status"></my-channel>
+          <my-channel v-model="FormArticle.channel_id"></my-channel>
         </el-form-item>
 
         <el-form-item label="时间" size="small">
@@ -30,7 +30,7 @@
             ></el-date-picker>
           </div>
         </el-form-item>
-        <el-button type="primary" size="small">筛选</el-button>
+        <el-button type="primary" size="small" @click="screen">筛选</el-button>
       </el-form>
     </el-card>
 
@@ -63,9 +63,15 @@
           </template>
         </el-table-column>
         <el-table-column prop="address" label="操作">
-          <template>
+          <template slot-scope="scope">
             <el-button type="primary" size="small" round class="el-icon-edit">编辑</el-button>
-            <el-button type="danger" size="small" round class="el-icon-delete">删除</el-button>
+            <el-button
+              type="danger"
+              size="small"
+              round
+              class="el-icon-delete"
+              @click="del(scope.row.id)"
+            >删除</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -102,13 +108,6 @@ export default {
       },
       // 时间
       begin: [],
-      // 频道列表
-      options: [
-        {
-          value: null,
-          label: '黄金糕'
-        }
-      ],
       // 表格数据
       tableData: [],
       // 总条数
@@ -119,6 +118,31 @@ export default {
     this.getData()
   },
   methods: {
+    del (id) {
+      this.axios.delete(`articles/${id}`).then(res => {
+        this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        })
+          .then(() => {
+            this.getData()
+          })
+          .catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            })
+          })
+      })
+    },
+    screen () {
+      // console.log(this.FormArticle)
+      this.getData()
+    },
+    status (id) {
+      this.FormArticle.status = id
+    },
     getTime (newTime) {
       this.FormArticle.begin_pubdate = newTime[0]
       this.FormArticle.end_pubdate = newTime[1]
