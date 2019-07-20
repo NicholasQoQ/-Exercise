@@ -17,12 +17,23 @@
             <el-radio :label="-1">自动</el-radio>
           </el-radio-group>
         </el-form-item>
+        <el-form-item>
+          <div v-if="getText.cover.type==1">
+            <my-upload v-model="getText.cover.images[0]"></my-upload>
+          </div>
+          <div v-if="getText.cover.type==3">
+            <my-upload v-model="getText.cover.images[0]"></my-upload>
+            <my-upload v-model="getText.cover.images[1]"></my-upload>
+            <my-upload v-model="getText.cover.images[2]"></my-upload>
+          </div>
+        </el-form-item>
+
         <el-form-item label="活动名称">
           <my-channel v-model="getText.channel_id"></my-channel>
         </el-form-item>
-        <el-form-item label="">
-            <el-button type="primary">发布</el-button>
-            <el-button>草稿</el-button>
+        <el-form-item label>
+          <el-button type="primary" @click="Issus(false)">发布</el-button>
+          <el-button @click="Issus(true)">草稿</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -57,10 +68,44 @@ export default {
             [{ indent: '-1' }, { indent: '+1' }]
           ]
         }
+      },
+      // 判断是否是修改
+      editId: null
+    }
+  },
+  created () {
+    this.editId = this.$route.query.id
+    if (this.editId) {
+      this.getEdit()
+    }
+  },
+  watch: {
+    $route () {
+      if (this.editId) {
+        this.getText = {
+          title: '',
+          content: '',
+          cover: {
+            type: 1,
+            images: []
+          },
+          channel_id: null
+        }
       }
     }
   },
-  created () {},
+  methods: {
+    getEdit () {
+      this.axios.get(`articles/${this.editId}`).then(res => {
+        this.getText = res.data.data
+      })
+    },
+    Issus (draft) {
+      this.axios.post(`articles?draft=${draft}`, this.getText).then(res => {
+        this.$router.push('/articles')
+      })
+    }
+  },
   components: {
     quillEditor
   }

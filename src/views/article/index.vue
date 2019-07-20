@@ -64,7 +64,13 @@
         </el-table-column>
         <el-table-column prop="address" label="操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small" round class="el-icon-edit">编辑</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              round
+              class="el-icon-edit"
+              @click="editor(scope.row.id)"
+            >编辑</el-button>
             <el-button
               type="danger"
               size="small"
@@ -118,6 +124,9 @@ export default {
     this.getData()
   },
   methods: {
+    editor (id) {
+      this.$router.push('/publish?id=' + id)
+    },
     del (id) {
       this.axios.delete(`articles/${id}`).then(res => {
         this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
